@@ -13,7 +13,12 @@ flask --debug run
 ```
 
 # Links
-https://realpython.com/
+https://hub.docker.com/layers/library/python/3.12-slim-bookworm/images/sha256-c6dad724027b0430c9ede96673b207fadea072c15fd1a4ea8dcb263cb6904e95
+https://hub.docker.com/layers/library/python/3.12-slim/
+https://github.com/devcontainers/features
+https://github.com/devcontainers/templates/tree/main/src/python
+https://hub.docker.com/r/microsoft/devcontainers-python
 https://flask.palletsprojects.com/en/stable/templating/#jinja-setup
+https://realpython.com/
 https://docs.python-guide.org/
 https://pypi.org/

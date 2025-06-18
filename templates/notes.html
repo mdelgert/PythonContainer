@@ -6,13 +6,137 @@
     <title>Notes CRUD</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <style>
-        table { width: 100%; border-collapse: collapse; margin-top: 1em; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #f4f4f4; }
-        .actions button { margin-right: 4px; }
-        .search-bar { margin-bottom: 1em; }
-        .pagination { margin-top: 1em; }
-        .pagination button { margin: 0 2px; }
+        body {
+            background-color: #282c34;
+            color: #fff;
+            font-family: inherit;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2em auto;
+            background: rgba(40,44,52,0.95);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            padding: 2em;
+        }
+        h1 {
+            text-align: center;
+            color: #61dafb;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+            background: #23272f;
+            color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #20232a;
+            color: #61dafb;
+        }
+        tr:nth-child(even) {
+            background: #2c313c;
+        }
+        tr:nth-child(odd) {
+            background: #23272f;
+        }
+        .actions button {
+            margin-right: 4px;
+            background: #61dafb;
+            color: #23272f;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .actions button:hover {
+            background: #21a1f3;
+            color: #fff;
+        }
+        .search-bar {
+            margin-bottom: 1em;
+            text-align: center;
+        }
+        .search-bar input {
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid #444;
+            background: #23272f;
+            color: #fff;
+        }
+        .search-bar button {
+            margin-left: 4px;
+            background: #61dafb;
+            color: #23272f;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-bar button:hover {
+            background: #21a1f3;
+            color: #fff;
+        }
+        #noteForm {
+            display: flex;
+            gap: 8px;
+            margin: 1em 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #noteForm input[type="text"] {
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid #444;
+            background: #23272f;
+            color: #fff;
+        }
+        #noteForm button {
+            background: #61dafb;
+            color: #23272f;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #noteForm button:hover {
+            background: #21a1f3;
+            color: #fff;
+        }
+        .pagination {
+            margin-top: 1em;
+            text-align: center;
+        }
+        .pagination button {
+            margin: 0 2px;
+            background: #23272f;
+            color: #61dafb;
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 4px 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .pagination button:disabled {
+            background: #61dafb;
+            color: #23272f;
+            cursor: default;
+        }
+        .pagination button:hover:not(:disabled) {
+            background: #21a1f3;
+            color: #fff;
+        }
     </style>
 </head>
 <body>

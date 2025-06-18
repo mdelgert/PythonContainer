@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes CRUD</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #f4f4f4; }
+        .actions button { margin-right: 4px; }
+        .search-bar { margin-bottom: 1em; }
+        .pagination { margin-top: 1em; }
+        .pagination button { margin: 0 2px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Notes</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search notes...">
+            <button onclick="searchNotes()">Search</button>
+            <button onclick="resetSearch()">Reset</button>
+        </div>
+        <form id="noteForm" onsubmit="return saveNote()">
+            <input type="hidden" id="noteId">
+            <input type="text" id="title" placeholder="Title" required>
+            <input type="text" id="content" placeholder="Content" required>
+            <button type="submit">Save</button>
+            <button type="button" onclick="clearForm()">Clear</button>
+        </form>
+        <table id="notesTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="pagination" id="pagination"></div>
+    </div>
+    <script>
+        const API_URL = '/notes/';
+        let notes = [];
+        let filteredNotes = [];
+        let currentPage = 1;
+        const pageSize = 5;
+
+        document.addEventListener('DOMContentLoaded', loadNotes);
+
+        function loadNotes() {
+            fetch(API_URL)
+                .then(res => res.json())
+                .then(data => {
+                    notes = data;
+                    filteredNotes = notes;
+                    renderTable();
+                    renderPagination();
+                });
+        }
+
+        function renderTable() {
+            const tbody = document.querySelector('#notesTable tbody');
+            tbody.innerHTML = '';
+            const start = (currentPage - 1) * pageSize;
+            const end = start + pageSize;
+            const pageNotes = filteredNotes.slice(start, end);
+            pageNotes.forEach(note => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${note.id}</td>
+                    <td>${note.title}</td>
+                    <td>${note.content}</td>
+                    <td class="actions">
+                        <button onclick="editNote(${note.id})">Edit</button>
+                        <button onclick="deleteNote(${note.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderPagination() {
+            const pageCount = Math.ceil(filteredNotes.length / pageSize);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            for (let i = 1; i <= pageCount; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.disabled = i === currentPage;
+                btn.onclick = () => { currentPage = i; renderTable(); renderPagination(); };
+                pagination.appendChild(btn);
+            }
+        }
+
+        function saveNote() {
+            const id = document.getElementById('noteId').value;
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const note = { title, content };
+            if (id) {
+                fetch(API_URL + id, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(note)
+                })
+                .then(res => res.json())
+                .then(() => { clearForm(); loadNotes(); });
+            } else {
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(note)
+                })
+                .then(res => res.json())
+                .then(() => { clearForm(); loadNotes(); });
+            }
+            return false;
+        }
+
+        function editNote(id) {
+            const note = notes.find(n => n.id === id);
+            if (note) {
+                document.getElementById('noteId').value = note.id;
+                document.getElementById('title').value = note.title;
+                document.getElementById('content').value = note.content;
+            }
+        }
+
+        function deleteNote(id) {
+            if (confirm('Delete this note?')) {
+                fetch(API_URL + id, { method: 'DELETE' })
+                    .then(() => loadNotes());
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('noteId').value = '';
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
+        }
+
+        function searchNotes() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            filteredNotes = notes.filter(note =>
+                note.title.toLowerCase().includes(query) ||
+                note.content.toLowerCase().includes(query)
+            );
+            currentPage = 1;
+            renderTable();
+            renderPagination();
+        }
+
+        function resetSearch() {
+            document.getElementById('searchInput').value = '';
+            filteredNotes = notes;
+            currentPage = 1;
+            renderTable();
+            renderPagination();
+        }
+    </script>
+</body>
+</html>

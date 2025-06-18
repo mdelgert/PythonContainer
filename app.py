@@ -12,8 +12,12 @@ def create_app():
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
     @app.route("/")
-    def index():
+    def index_page():
         return render_template("index.html")
+
+    @app.route("/notes")
+    def notes_page():
+        return render_template("notes.html")
 
     api = Api(app)
     api.register_blueprint(NotesBlueprint)

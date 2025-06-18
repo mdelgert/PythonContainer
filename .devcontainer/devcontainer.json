@@ -1,5 +1,6 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  // "image": "mcr.microsoft.com/devcontainers/python:3.11",
   "hostRequirements": {
     "cpus": 4
   },
@@ -31,5 +32,8 @@
       ]
     }
   },
-  "forwardPorts": [5000]
+  "forwardPorts": [5000],
+  "mounts": [
+    "source=${env:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+  ]
 }

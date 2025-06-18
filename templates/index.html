@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
+</head>
 <body>
     <div class="App">
         <header class="App-header">
@@ -14,8 +14,12 @@
             <p class="small">
                 Edit <code>templates/index.html</code> and refresh to see your changes!
             </p>
+            <p>
+                <a href="/swagger-ui" target="_blank" rel="noopener noreferrer">
+                    <span style="font-size:1.2em;vertical-align:middle;">🔗</span> Open Swagger UI (API Docs)
+                </a>
+            </p>
         </header>
     </div>
 </body>
-
 </html>

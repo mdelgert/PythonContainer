@@ -6,6 +6,9 @@ services:
     image: demo
     ports:
       - "80:5000"
+    volumes:
+      # Cant be mounted in dev container must ssh into host to mount this
+      - .:/app
     environment:
       - FLASK_ENV=development
       - FLASK_APP=app:app

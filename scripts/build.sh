@@ -8,7 +8,7 @@ if [ $(docker ps -aq -f name=python_app) ]; then
 fi
 
 echo "Building Docker image..."
-docker-compose build
+docker compose build
 
 echo "Running Docker container..."
-docker-compose up
+docker compose up

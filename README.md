@@ -11,3 +11,9 @@ To run this application:
 ```
 flask --debug run
 ```
+
+# Links
+https://realpython.com/
+https://flask.palletsprojects.com/en/stable/templating/#jinja-setup
+https://docs.python-guide.org/
+https://pypi.org/

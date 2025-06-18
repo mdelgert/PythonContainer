@@ -2,7 +2,7 @@
 
 cd ..
 
-VERSION="v1.0.0"
+VERSION="v1.0.1"
 echo "Current version is $VERSION"
 git tag -d $VERSION
 git push origin --delete $VERSION
